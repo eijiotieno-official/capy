@@ -82,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Screenshot(
-            controller: _screenshotController,
+            controller:
+                _screenshotController, // Controller for capturing screenshots
             child: Container(
               // Container with gradient background and rounded corners
               decoration: BoxDecoration(
@@ -91,25 +92,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    currentColor.begin,
-                    currentColor.end,
+                    currentColor.begin, // Starting color of the gradient
+                    currentColor.end, // Ending color of the gradient
                   ],
                 ),
               ),
               child: CaptionInput(
-                textEditingController: _textEditingController,
-                textAlign: _textAlignments[_textAlign],
-                onChanged: (v) => setState(() {}),
+                textEditingController:
+                    _textEditingController, // Controller for the caption input field
+                textAlign: _textAlignments[
+                    _textAlign], // Text alignment based on the current index
+                onChanged: (v) =>
+                    setState(() {}), // Callback for text input changes
               ),
             ),
           ),
         ),
         floatingActionButton: _textEditingController.text.trim().isEmpty
-            ? null
+            ? null // If the trimmed text is empty, FAB is set to null
             : FloatingActionButton(
-                onPressed: () => _capture(),
+                // If the trimmed text is not empty, display the FAB
+                onPressed: () =>
+                    _capture(), // onPressed callback calls the _capture method
                 child: const Icon(
-                  Icons.check_rounded,
+                  Icons.check_rounded, // Icon for the FAB (check mark icon)
                 ),
               ),
       ),
@@ -151,18 +157,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showLoadingDialog() => showDialog(
-        context: context,
+        // Show a loading dialog to inform the user about an ongoing process
+
+        context:
+            context, // The current BuildContext required to show the dialog
+
         barrierDismissible:
             false, // Prevent dismissal by tapping outside the dialog
+
         builder: (BuildContext context) {
+          // Define the content and appearance of the dialog
+
           return const AlertDialog(
-            title: Text("Please wait..."),
+            // Display an AlertDialog with the specified title and content
+
+            title: Text("Please wait..."), // Title of the dialog
+
             content: Row(
               mainAxisSize: MainAxisSize.min,
+              // Define the size of the row based on its children
+
               children: [
-                CircularProgressIndicator(strokeCap: StrokeCap.round),
-                SizedBox(width: 20),
-                Text("Saving to gallery."),
+                CircularProgressIndicator(
+                    strokeCap: StrokeCap.round), // Loading indicator
+                SizedBox(width: 20), // Spacing between indicator and text
+                Text("Saving to gallery."), // Text content to inform the user
               ],
             ),
           );
@@ -170,34 +189,64 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
   Future<void> _save(Uint8List bytes) async {
-    // Save the image to the device's gallery using ImageGallerySaver library
+    // This method saves the image represented by the Uint8List bytes to the device's gallery.
+    // It uses the ImageGallerySaver library for this purpose.
+    // The method is asynchronous, as it involves IO operations, so it returns a Future<void>.
+
     await ImageGallerySaver.saveImage(
       bytes,
+      // The bytes parameter represents the image data to be saved.
+      // It's of type Uint8List, which is commonly used for image data in Flutter.
+
       quality: 100,
+      // The quality parameter determines the quality of the saved image.
+      // Here, it's set to 100, indicating the highest quality (no compression).
+
       name: _getFirstFiveWords(
         _textEditingController.text.trim(),
       ),
+      // The name parameter specifies the filename for the saved image.
+      // It's set to the result of the _getFirstFiveWords method, which truncates the text from the input field.
+      // The text is trimmed to remove leading and trailing whitespaces before truncation.
     );
   }
 
   String _getFirstFiveWords(String text) {
-    // Split the input text into a list of words using space as a delimiter
-    final words = text.split(' ');
+    // This method extracts the first five words from the input text string.
+    // If the input string contains five words or fewer, it returns the original string unchanged.
 
-    // Check if the list contains more than five words
+    final words = text.split(' ');
+    // Split the input text into a list of words using space as a delimiter.
+    // The split method returns a list of substrings, each containing a word from the input text.
+
     if (words.length > 5) {
-      // If more than five words, take the first five words and join them back into a string
+      // Check if the list contains more than five words.
+      // If so, it means the input text has more than five words.
+
       return words.take(5).join(' ');
+      // Take the first five words from the list of words and join them back into a single string.
+      // The take method returns the first five elements from the list, and the join method concatenates them with spaces.
+      // This ensures that the resulting string contains at most the first five words from the input text.
     } else {
+      // If the input text has five words or fewer, return the original string unchanged.
       return text;
     }
   }
 
   void _showSnackBar(String s) {
+    // This method displays a snackbar with the provided message 's'.
+
     ScaffoldMessenger.of(context).showSnackBar(
+      // Access the ScaffoldMessenger to display the snackbar.
+      // ScaffoldMessenger is responsible for managing snackbars within the current scaffold.
+
       SnackBar(
-        content: Text(s),
-        duration: const Duration(seconds: 3),
+        content: Text(s), // The text content of the snackbar.
+        // Displays the provided message in the snackbar.
+
+        duration: const Duration(
+            seconds: 3), // Duration for which the snackbar is displayed.
+        // The snackbar will be visible for 3 seconds before automatically dismissing.
       ),
     );
   }
