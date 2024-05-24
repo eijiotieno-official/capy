@@ -1,16 +1,15 @@
-import 'package:capy/notifiers/colors_notifier.dart'; // Import custom notifier
-import 'package:capy/screens/home_screen.dart'; // Import home screen
-import 'package:flutter/material.dart'; // Import Flutter material package
-import 'package:provider/provider.dart'; // Import provider for state management
+import 'package:capy/screens/home_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'notifiers/color_notifier.dart';
 
 // Entry point of the application
 void main() {
-  runApp(const MainApp()); // Run the MainApp widget
+  runApp(const MainApp());
 }
 
-// Main application widget
 class MainApp extends StatelessWidget {
-  // Constructor with named parameter
   const MainApp({super.key});
 
   @override
@@ -18,14 +17,24 @@ class MainApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         // Register the ColorsNotifier with ChangeNotifierProvider
-        ChangeNotifierProvider(create: (_) => ColorsNotifier()),
+        ChangeNotifierProvider(create: (_) => ColorNotifier())
       ],
       child: MaterialApp(
         theme: ThemeData(
-          useMaterial3: true, // Enable Material 3
-          colorSchemeSeed: Colors.pink, // Set primary color scheme seed
+          // Enable material 3
+          useMaterial3: true,
+          // Set primary color scheme
+          colorSchemeSeed: Colors.pink,
+          brightness: Brightness.light,
         ),
-        home: const HomeScreen(), // Set the home screen of the app
+        darkTheme: ThemeData(
+          // Enable material 3
+          useMaterial3: true,
+          // Set primary color scheme
+          colorSchemeSeed: Colors.pink,
+          brightness: Brightness.dark,
+        ),
+        home: const HomeScreen(),
       ),
     );
   }

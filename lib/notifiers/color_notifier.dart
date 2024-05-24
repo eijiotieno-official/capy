@@ -1,8 +1,8 @@
-import 'package:capy/models/background_color.dart'; // Import custom model for background colors
-import 'package:flutter/material.dart'; // Import Flutter material package
+import 'package:capy/models/background_color.dart';
+import 'package:flutter/material.dart';
 
 // Notifier class for managing background colors
-class ColorsNotifier extends ChangeNotifier {
+class ColorNotifier extends ChangeNotifier {
   // List of predefined background colors
   final List<BackgroundColor> _colors = [
     BackgroundColor(
@@ -35,15 +35,16 @@ class ColorsNotifier extends ChangeNotifier {
   int _currentColor = 0;
 
   // Getter for the current background color index
-  int get currentColor => _currentColor;
+  int get currenColor => _currentColor;
 
   // Method to switch to the next background color
   void switchColor() {
     if (_currentColor < (_colors.length - 1)) {
-      _currentColor++; // Increment the current color index
+      _currentColor++;
     } else {
       _currentColor = 0; // Reset to the first color if at the end
     }
-    notifyListeners(); // Notify listeners of the change
+    // Notify listeners of the change
+    notifyListeners();
   }
 }
